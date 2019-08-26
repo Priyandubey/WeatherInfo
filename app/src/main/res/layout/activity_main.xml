@@ -25,13 +25,13 @@
             android:textStyle="bold|italic" />
 
         <LinearLayout
-            android:layout_width="421dp"
+            android:layout_width="match_parent"
             android:layout_height="65dp"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_width="280dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="Enter The Name of City"
@@ -39,9 +39,9 @@
 
             <ImageButton
                 android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.2"
                 android:background="@null"
                 android:onClick="searchButton"
                 android:scaleType="centerCrop"

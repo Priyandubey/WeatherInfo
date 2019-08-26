@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
                             JSONArray list = response.getJSONArray("list");
 
-                            for (int i = 0;i < 6;i++){
+                            for (int i = 0;i < 7;i++){
 
                                 JSONObject object = list.getJSONObject(i);
 
@@ -138,14 +138,19 @@ public class MainActivity extends AppCompatActivity {
 
                                     case WEATHER_CLEAR:
                                         todayImage.setImageResource(R.drawable.newsun);
+                                        break;
                                     case WEATHER_CLOUDS:
                                         todayImage.setImageResource(R.drawable.newcloud);
+                                        break;
                                     case WEATHER_RAIN:
                                         todayImage.setImageResource(R.drawable.newrain);
+                                        break;
                                     case WEATHER_SNOW:
                                         todayImage.setImageResource(R.drawable.newsnowman);
+                                        break;
                                     case WEATHER_WIND:
                                         todayImage.setImageResource(R.drawable.newwind);
+                                        break;
 
                                 }
 

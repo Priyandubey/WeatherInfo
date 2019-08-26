@@ -41,26 +41,33 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
+
      //       Log.i("this is ko",Integer.toString(reportList.size()));
             DailyWeatherReport r = reportList.get(position);
-
-            holder.mnTemp.setText(r.minTemp);
+            Log.i("array",r.getWeather());
+            holder.mnTemp.setText(String.valueOf(r.minTemp) + "°");
             switch (r.weather) {
 
                 case WEATHER_CLEAR:
                     holder.image.setImageResource(R.drawable.newsun);
+                    break;
                 case WEATHER_CLOUDS:
                     holder.image.setImageResource(R.drawable.newcloud);
+                    break;
                 case WEATHER_RAIN:
                     holder.image.setImageResource(R.drawable.newrain);
+                    break;
                 case WEATHER_SNOW:
                     holder.image.setImageResource(R.drawable.newsnowman);
+                    break;
                 case WEATHER_WIND:
                     holder.image.setImageResource(R.drawable.newwind);
+                    break;
 
             }
-            holder.curTemp.setText(r.currentTemp);
-            holder.climate.setText(r.weather);
+//            Log.i("xurtemp",String.valueOf(r.currentTemp));
+            holder.curTemp.setText(String.valueOf(r.currentTemp) + "°");
+            holder.climate.setText(String.valueOf(r.weather));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -69,7 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

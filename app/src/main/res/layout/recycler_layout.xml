@@ -25,7 +25,7 @@
 
             <TextView
                 android:id="@+id/recyclerDay"
-                android:layout_width="301dp"
+                android:layout_width="250dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="TextView"
@@ -35,12 +35,14 @@
 
             <TextView
                 android:id="@+id/recyclerTemp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="right"
-                android:text="45°"
+                android:layout_weight="1"
+                android:text="TextView"
                 android:textColor="@android:color/background_dark"
-                android:textSize="24sp" />
+                android:textSize="25sp"
+                tools:text="45°" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -51,17 +53,15 @@
 
             <TextView
                 android:id="@+id/recyclerReport"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Clear"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/recyclerMinTemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.036"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="41°"
                 android:textSize="20sp" />
         </LinearLayout>
