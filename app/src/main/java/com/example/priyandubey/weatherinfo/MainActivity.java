@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -193,115 +194,120 @@ public class MainActivity extends AppCompatActivity {
 
         String city = editText.getText().toString();
 
-        String url = weatherApi + city + appId + units;
+        if(city.equals("")){
+            Toast.makeText(this, "Enter Proper City Name", Toast.LENGTH_SHORT).show();
+        }else {
 
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            String url = weatherApi + city + appId + units;
+
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
 
-                    ArrayList<DailyWeatherReport> temp = new ArrayList<>();
+                        ArrayList<DailyWeatherReport> temp = new ArrayList<>();
 
-                    @Override
-                    public void onResponse(JSONObject response) {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
 //                        Log.i("Response- ",response.toString() );
 
-                        try {
+                            try {
 
-                            JSONObject city = response.getJSONObject("city");
-                            String name = city.getString("name");
-                            String country = city.getString("country");
+                                JSONObject city = response.getJSONObject("city");
+                                String name = city.getString("name");
+                                String country = city.getString("country");
 
-                            JSONArray list = response.getJSONArray("list");
+                                JSONArray list = response.getJSONArray("list");
 
-                            for (int i = 0;i < 7;i++){
+                                for (int i = 0; i < 7; i++) {
 
-                                JSONObject object = list.getJSONObject(i);
+                                    JSONObject object = list.getJSONObject(i);
 
-                                JSONObject main = object.getJSONObject("main");
-                                Double currentTemp = main.getDouble("temp");
-                                Double maxTemp = main.getDouble("temp_max");
-                                Double minTemp = main.getDouble("temp_min");
+                                    JSONObject main = object.getJSONObject("main");
+                                    Double currentTemp = main.getDouble("temp");
+                                    Double maxTemp = main.getDouble("temp_max");
+                                    Double minTemp = main.getDouble("temp_min");
 
-                                JSONArray weatherArr = object.getJSONArray("weather");
-                                JSONObject weather = weatherArr.getJSONObject(0);
-                                String weatherType = weather.getString("main");
+                                    JSONArray weatherArr = object.getJSONArray("weather");
+                                    JSONObject weather = weatherArr.getJSONObject(0);
+                                    String weatherType = weather.getString("main");
 
-                                String rawDate = object.getString("dt_txt");
+                                    String rawDate = object.getString("dt_txt");
 
-                                DailyWeatherReport report = new DailyWeatherReport(name,country,currentTemp.intValue(),maxTemp.intValue(),minTemp.intValue(),weatherType,rawDate);
+                                    DailyWeatherReport report = new DailyWeatherReport(name, country, currentTemp.intValue(), maxTemp.intValue(), minTemp.intValue(), weatherType, rawDate);
 
 //                                Log.i("printing from json",report.getCountry());
 
-                                info.add(report);
-                                if(i!=0) temp.add(report);
+                                    info.add(report);
+                                    if (i != 0) temp.add(report);
 
-                            }
+                                }
 
 
-                            int curMonth = calendar.get(Calendar.MONTH);
-                            int curDayMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                           // Log.i("day",Integer.toString(curMonth));
-                            today.setText("     Today, " + monthNumber[curMonth] + " " + curDayMonth  );
+                                int curMonth = calendar.get(Calendar.MONTH);
+                                int curDayMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                                // Log.i("day",Integer.toString(curMonth));
+                                today.setText("     Today, " + monthNumber[curMonth] + " " + curDayMonth);
 
-                            DailyWeatherReport dr = temp.get(0);
+                                DailyWeatherReport dr = temp.get(0);
 
-                            todayTemp.setText(dr.getCurrentTemp() + "°");
-                            todayMinTemp.setText(dr.getMinTemp() + "°");
-                            todayWeather.setText(dr.getWeather());
-                            locationMain.setText(dr.getCity() + ", " + dr.getCountry());
-                            Log.i("this is debug city:-",dr.getCity());
-                           // Log.i("date",dr.getFormattedDate());
+                                todayTemp.setText(dr.getCurrentTemp() + "°");
+                                todayMinTemp.setText(dr.getMinTemp() + "°");
+                                todayWeather.setText(dr.getWeather());
+                                locationMain.setText(dr.getCity() + ", " + dr.getCountry());
+                                Log.i("this is debug city:-", dr.getCity());
+                                // Log.i("date",dr.getFormattedDate());
 
-                            switch(dr.getWeather()) {
+                                switch (dr.getWeather()) {
 
-                                case WEATHER_CLEAR:
-                                    todayImage.setImageResource(R.drawable.newsun);
-                                    break;
-                                case WEATHER_CLOUDS:
-                                    todayImage.setImageResource(R.drawable.newcloud);
-                                    break;
-                                case WEATHER_RAIN:
-                                    todayImage.setImageResource(R.drawable.newrain);
-                                    break;
-                                case WEATHER_SNOW:
-                                    todayImage.setImageResource(R.drawable.newsnowman);
-                                    break;
-                                case WEATHER_WIND:
-                                    todayImage.setImageResource(R.drawable.newwind);
-                                    break;
+                                    case WEATHER_CLEAR:
+                                        todayImage.setImageResource(R.drawable.newsun);
+                                        break;
+                                    case WEATHER_CLOUDS:
+                                        todayImage.setImageResource(R.drawable.newcloud);
+                                        break;
+                                    case WEATHER_RAIN:
+                                        todayImage.setImageResource(R.drawable.newrain);
+                                        break;
+                                    case WEATHER_SNOW:
+                                        todayImage.setImageResource(R.drawable.newsnowman);
+                                        break;
+                                    case WEATHER_WIND:
+                                        todayImage.setImageResource(R.drawable.newwind);
+                                        break;
 
-                            }
+                                }
 
 //                            Log.i("size inside of array",Integer.toString(temp.size()));
 
 
-                            recyclerAdapter = new RecyclerAdapter(temp,getApplicationContext());
-                            recyclerView.setAdapter(recyclerAdapter);
+                                recyclerAdapter = new RecyclerAdapter(temp, getApplicationContext());
+                                recyclerView.setAdapter(recyclerAdapter);
 
-                        }catch(Exception e){
+                            } catch (Exception e) {
 
-                            e.printStackTrace();
+                                e.printStackTrace();
+
+                            }
+
 
                         }
+                    }, new Response.ErrorListener() {
 
-
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //error.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Enter the Proper City Name", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
 // Access the RequestQueue through your singleton class.
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+            MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 //        Log.i("this is the root",info.toString());
 //        Log.i("size of array",Integer.toString(info.size()));
 
 
+        }
     }
 
 
