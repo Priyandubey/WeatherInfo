@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
+    Calendar calendar = Calendar.getInstance();
 
     static final public String WEATHER_CLOUDS = "Clouds";
     static final public String WEATHER_RAIN = "Rain";
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     static final public String WEATHER_SNOW = "Snow";
     static final public String WEATHER_CLEAR = "Clear";
     final static String monthNumber[] = new String[]{"January","February","Marh","April","May","June","July","August","September","October","November","December"};
-    final String dayNumber[] = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+    final static String dayNumber[] = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
     TextView today;
     TextView todayTemp;
     TextView todayMinTemp;
@@ -120,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
-                            Calendar calendar = Calendar.getInstance();
+
                             int curMonth = calendar.get(Calendar.MONTH);
                             int curDayMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                            Log.i("day",Integer.toString(curMonth));
+                          //  Log.i("day",Integer.toString(curMonth));
                             today.setText("     Today, " + monthNumber[curMonth] + " " + curDayMonth  );
 
                                 DailyWeatherReport dr = info.get(0);
@@ -132,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
                                 todayMinTemp.setText(dr.getMinTemp() + "°");
                                 todayWeather.setText(dr.getWeather());
                                 locationMain.setText(dr.getCity() + ", " + dr.getCountry());
-                                Log.i("date",dr.getFormattedDate());
+                            Log.i("this is debug city:-",dr.getCity());
+                            //    Log.i("date",dr.getFormattedDate());
 
                                 switch(dr.getWeather()) {
 
@@ -189,8 +191,115 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchButton(View view){
 
-        cityName = editText.getText().toString();
+        String city = editText.getText().toString();
 
+        String url = weatherApi + city + appId + units;
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+
+                    ArrayList<DailyWeatherReport> temp = new ArrayList<>();
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+//                        Log.i("Response- ",response.toString() );
+
+                        try {
+
+                            JSONObject city = response.getJSONObject("city");
+                            String name = city.getString("name");
+                            String country = city.getString("country");
+
+                            JSONArray list = response.getJSONArray("list");
+
+                            for (int i = 0;i < 7;i++){
+
+                                JSONObject object = list.getJSONObject(i);
+
+                                JSONObject main = object.getJSONObject("main");
+                                Double currentTemp = main.getDouble("temp");
+                                Double maxTemp = main.getDouble("temp_max");
+                                Double minTemp = main.getDouble("temp_min");
+
+                                JSONArray weatherArr = object.getJSONArray("weather");
+                                JSONObject weather = weatherArr.getJSONObject(0);
+                                String weatherType = weather.getString("main");
+
+                                String rawDate = object.getString("dt_txt");
+
+                                DailyWeatherReport report = new DailyWeatherReport(name,country,currentTemp.intValue(),maxTemp.intValue(),minTemp.intValue(),weatherType,rawDate);
+
+//                                Log.i("printing from json",report.getCountry());
+
+                                info.add(report);
+                                if(i!=0) temp.add(report);
+
+                            }
+
+
+                            int curMonth = calendar.get(Calendar.MONTH);
+                            int curDayMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                           // Log.i("day",Integer.toString(curMonth));
+                            today.setText("     Today, " + monthNumber[curMonth] + " " + curDayMonth  );
+
+                            DailyWeatherReport dr = temp.get(0);
+
+                            todayTemp.setText(dr.getCurrentTemp() + "°");
+                            todayMinTemp.setText(dr.getMinTemp() + "°");
+                            todayWeather.setText(dr.getWeather());
+                            locationMain.setText(dr.getCity() + ", " + dr.getCountry());
+                            Log.i("this is debug city:-",dr.getCity());
+                           // Log.i("date",dr.getFormattedDate());
+
+                            switch(dr.getWeather()) {
+
+                                case WEATHER_CLEAR:
+                                    todayImage.setImageResource(R.drawable.newsun);
+                                    break;
+                                case WEATHER_CLOUDS:
+                                    todayImage.setImageResource(R.drawable.newcloud);
+                                    break;
+                                case WEATHER_RAIN:
+                                    todayImage.setImageResource(R.drawable.newrain);
+                                    break;
+                                case WEATHER_SNOW:
+                                    todayImage.setImageResource(R.drawable.newsnowman);
+                                    break;
+                                case WEATHER_WIND:
+                                    todayImage.setImageResource(R.drawable.newwind);
+                                    break;
+
+                            }
+
+//                            Log.i("size inside of array",Integer.toString(temp.size()));
+
+
+                            recyclerAdapter = new RecyclerAdapter(temp,getApplicationContext());
+                            recyclerView.setAdapter(recyclerAdapter);
+
+                        }catch(Exception e){
+
+                            e.printStackTrace();
+
+                        }
+
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+// Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+//        Log.i("this is the root",info.toString());
+//        Log.i("size of array",Integer.toString(info.size()));
 
 
     }

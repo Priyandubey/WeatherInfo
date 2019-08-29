@@ -13,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.priyandubey.weatherinfo.MainActivity.WEATHER_CLEAR;
 import static com.example.priyandubey.weatherinfo.MainActivity.WEATHER_CLOUDS;
 import static com.example.priyandubey.weatherinfo.MainActivity.WEATHER_RAIN;
 import static com.example.priyandubey.weatherinfo.MainActivity.WEATHER_SNOW;
 import static com.example.priyandubey.weatherinfo.MainActivity.WEATHER_WIND;
+import static com.example.priyandubey.weatherinfo.MainActivity.dayNumber;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
@@ -40,12 +42,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
         try {
 
-     //       Log.i("this is ko",Integer.toString(reportList.size()));
             DailyWeatherReport r = reportList.get(position);
-            Log.i("array",r.getWeather());
+           // Log.i("array",r.getWeather());
             holder.mnTemp.setText(String.valueOf(r.minTemp) + "°");
+            holder.day.setText(dayNumber[(position + dayOfWeek)%7]);
+            if(position == 0){
+                holder.day.setText("Tomorrow");
+            }
             switch (r.weather) {
 
                 case WEATHER_CLEAR:
