@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                 todayMinTemp.setText(dr.getMinTemp() + "°");
                                 todayWeather.setText(dr.getWeather());
                                 locationMain.setText(dr.getCity() + ", " + dr.getCountry());
-                            Log.i("this is debug city:-",dr.getCity());
+//                            Log.i("this is debug city:-",dr.getCity());
                             //    Log.i("date",dr.getFormattedDate());
 
                                 switch(dr.getWeather()) {

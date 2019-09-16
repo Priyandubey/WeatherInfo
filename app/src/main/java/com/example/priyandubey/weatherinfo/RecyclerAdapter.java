@@ -50,7 +50,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             DailyWeatherReport r = reportList.get(position);
            // Log.i("array",r.getWeather());
             holder.mnTemp.setText(String.valueOf(r.minTemp) + "°");
-            holder.day.setText(dayNumber[(position + dayOfWeek)%7]);
+            holder.day.setText(dayNumber[(position + dayOfWeek - 1)%7]);
             if(position == 0){
                 holder.day.setText("Tomorrow");
             }
