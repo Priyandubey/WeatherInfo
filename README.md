@@ -1,6 +1,5 @@
-This app is now Functional.
 This app is created with the help of openweather api.
-This is the weather app which tells the temperature and weather of any city around the world
+This is the weatherandroid app which tells the temperature and weather of any city around the world
 and user can enter the city manually. 
 
 [![Screenshot-20190829-194313-com-example-priyandubey-weatherinfo.jpg](https://i.postimg.cc/WpDX8C8S/Screenshot-20190829-194313-com-example-priyandubey-weatherinfo.jpg)](https://postimg.cc/rzk1Fhvt)
