@@ -1,15 +1,12 @@
 package com.example.priyandubey.weatherinfo;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     break;
 
             }
-//            Log.i("xurtemp",String.valueOf(r.currentTemp));
+//            Log.i("currtemp",String.valueOf(r.currentTemp));
             holder.curTemp.setText(String.valueOf(r.currentTemp) + "°");
             holder.climate.setText(String.valueOf(r.weather));
         }catch (Exception e){
